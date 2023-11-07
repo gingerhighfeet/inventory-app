@@ -6,24 +6,29 @@ const Inventory = require('../models/inventoryModel')
 //@route GET /api/inventory
 //@access Private
 const getInventory = asyncHandler(async (req, res) => {
-    const inventory = await Promise.all(Inventory.map(async (Inventory) => {
-        return { 
-            name: Inventory.inventoryItem,
-            price: Inventory.price, 
-            quantity: Inventory.quantity,
-            }
-        }
-    ))
+    try {
+        const inventory = await Inventory.find({}, { _id: 0, __v: 0 }); // Exclude _id and __v fields from the response
 
-    res.status(200).json(inventory)
-})
+        const formattedInventory = inventory.map(item => ({
+            name: item.inventoryItem,
+            price: item.price,
+            quantity: item.quantity
+        }));
+
+        res.status(200).json(formattedInventory);
+    } catch (error) {
+        // Handle error, for example, send an error response
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 // @desc    Set inventory
 // @route   POST /api/inventory
 // @access  Private
 const setInventory = asyncHandler(async (req, res) => {
-    const { inventoryItem, price, quantity } = req.body
-
+    const { inventoryItem, price, quantity } = req.body;
+    
   if (!inventoryItem || !price || !quantity) {
     res.status(400)
     throw new Error('Please add all fields')
@@ -33,29 +38,30 @@ const setInventory = asyncHandler(async (req, res) => {
         inventoryItem,
         price,
         quantity,
-    })
+    });
   
-   res.status(200).json(inventory)
-  }) 
+   res.status(200).json(inventory);
+  });
 
 // @desc    Delete inventory item
 // @route   DELETE /api/inventory/:id
 // @access  Private
 const deleteInventory = asyncHandler(async (req, res) => {
-    const inventory = await Promise.all(Inventory.find(async inventory => {
-    
-        if(!inventory){
-            res.status(400)
-            throw new Error('No inventory found')
-        }
-        
-        await inventory.remove()
-    }))
-    
-    
+    try {
+        const inventory = await Inventory.findById(req.params.id);
 
-    res.status(200).json({message: successful})
-})
+        if (!inventory) {
+            return res.status(404).json({ message: 'Inventory item not found' });
+        }
+
+        await Inventory.deleteOne({ _id: req.params.id });
+
+        res.status(200).json({ message: 'Inventory item deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 module.exports = {
     getInventory,
