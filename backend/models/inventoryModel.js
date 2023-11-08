@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const inventorySchema = mongoose.Schema(
   {
-    inventoryItem: {
+    name: {
       type: String,
       required: [true, 'Please add an inventory item name'],
     },

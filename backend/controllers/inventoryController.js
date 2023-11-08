@@ -10,7 +10,7 @@ const getInventory = asyncHandler(async (req, res) => {
         const inventory = await Inventory.find({}, { _id: 0, __v: 0 }); // Exclude _id and __v fields from the response
 
         const formattedInventory = inventory.map(item => ({
-            name: item.inventoryItem,
+            name: item.name,
             price: item.price,
             quantity: item.quantity
         }));
@@ -27,15 +27,15 @@ const getInventory = asyncHandler(async (req, res) => {
 // @route   POST /api/inventory
 // @access  Private
 const setInventory = asyncHandler(async (req, res) => {
-    const { inventoryItem, price, quantity } = req.body;
+    const { name, price, quantity } = req.body;
     
-  if (!inventoryItem || !price || !quantity) {
+  if (!name || !price || !quantity) {
     res.status(400)
     throw new Error('Please add all fields')
   }
   
    const inventory = await Inventory.create({
-        inventoryItem,
+        name,
         price,
         quantity,
     });
