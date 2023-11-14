@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { createInventory } from '../features/inventory/inventorySlice'
+import { createProduct } from '../features/product/productSlice'
 
-function InventoryForm() {
+function ProductForm() {
   const [text, setText] = useState('')
 
   const dispatch = useDispatch()
@@ -10,7 +10,7 @@ function InventoryForm() {
   const onSubmit = (e) => {
     e.preventDefault()
 
-    dispatch(createInventory({ text }))
+    dispatch(createProduct({ text }))
     setText('')
   }
 
@@ -18,7 +18,7 @@ function InventoryForm() {
     <section className='form'>
       <form onSubmit={onSubmit}>
         <div className='form-group'>
-          <label htmlFor='text'>Inventory</label>
+          <label htmlFor='text'>Product</label>
             <input
                 type='text'
                 name='name'
@@ -51,4 +51,4 @@ function InventoryForm() {
   )
 }
 
-export default InventoryForm
+export default ProductForm

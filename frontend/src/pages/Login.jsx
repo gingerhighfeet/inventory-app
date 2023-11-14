@@ -61,7 +61,7 @@ function Login() {
         <h1>
           <FaSignInAlt /> Login
         </h1>
-        <p>Login and manage inventory</p>
+        <p>Login and manage your inventory</p>
       </section>
 
       <section className='form'>

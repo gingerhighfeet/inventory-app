@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import inventoryService from './inventoryService'
+import productService from './productService'
 
 const initialState = {
-  inventory: [],
+  product: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: '',
 }
 
-// Create new inventory item
-export const createInventory = createAsyncThunk(
-  'inventory/create',
-  async (inventoryData, thunkAPI) => {
+// Create new product
+export const createProduct = createAsyncThunk(
+  'product/create',
+  async (productData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await inventoryService.createInventory(inventoryData, token)
+      return await productService.createproduct(productData, token)
     } catch (error) {
       const message =
         (error.response &&
@@ -28,13 +28,13 @@ export const createInventory = createAsyncThunk(
   }
 )
 
-// Get inventory
-export const getInventory = createAsyncThunk(
-  'inventory/getAll',
+// Get products
+export const getProducts = createAsyncThunk(
+  'product/getAll',
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await inventoryService.getInventory(token)
+      return await productService.getProducts(token)
     } catch (error) {
       const message =
         (error.response &&
@@ -47,13 +47,13 @@ export const getInventory = createAsyncThunk(
   }
 )
 
-// Delete goal
-export const deleteInventory = createAsyncThunk(
-  'inventory/delete',
+// Delete product
+export const deleteProduct = createAsyncThunk(
+  'product/delete',
   async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await inventoryService.deleteInventory(id, token)
+      return await productService.deleteProduct(id, token)
     } catch (error) {
       const message =
         (error.response &&
@@ -66,51 +66,51 @@ export const deleteInventory = createAsyncThunk(
   }
 )
 
-export const inventorySlice = createSlice({
-  name: 'inventory',
+export const productSlice = createSlice({
+  name: 'product',
   initialState,
   reducers: {
     reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createInventory.pending, (state) => {
+      .addCase(createProduct.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(createInventory.fulfilled, (state, action) => {
+      .addCase(createProduct.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
         state.goals.push(action.payload)
       })
-      .addCase(createInventory.rejected, (state, action) => {
+      .addCase(createProduct.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
       })
-      .addCase(getInventory.pending, (state) => {
+      .addCase(getProducts.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(getInventory.fulfilled, (state, action) => {
+      .addCase(getProducts.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
         state.goals = action.payload
       })
-      .addCase(getInventory.rejected, (state, action) => {
+      .addCase(getProducts.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
       })
-      .addCase(deleteInventory.pending, (state) => {
+      .addCase(deleteProduct.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(deleteInventory.fulfilled, (state, action) => {
+      .addCase(deleteProduct.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.goals = state.goals.filter(
-          (goal) => goal._id !== action.payload.id
+        state.products = state.products.filter(
+          (product) => product._id !== action.payload.id
         )
       })
-      .addCase(deleteInventory.rejected, (state, action) => {
+      .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
@@ -118,5 +118,5 @@ export const inventorySlice = createSlice({
   },
 })
 
-export const { reset } = inventorySlice.actions
-export default inventorySlice.reducer
+export const { reset } = productSlice.actions
+export default productSlice.reducer
