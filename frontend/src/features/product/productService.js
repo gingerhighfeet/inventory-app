@@ -17,16 +17,19 @@ const createProduct = async (productData, token) => {
 
 // Get all products
 const getProducts = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  try {
+    const response = await axios.get(API_URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log('API Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
   }
-
-  const response = await axios.get(API_URL, config)
-
-  return response.data
-}
+};
 
 // Delete a product
 const deleteProduct = async (productId, token) => {

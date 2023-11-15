@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import productService from './productService'
 
 const initialState = {
-  product: {},
+  product: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -33,19 +33,13 @@ export const getProducts = createAsyncThunk(
   'product/getAll',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await productService.getProducts(token)
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
+      const token = thunkAPI.getState().auth.user.token;
+      return await productService.getProducts(token);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
   }
-)
+});
 
 // Delete product
 export const deleteProduct = createAsyncThunk(
@@ -106,9 +100,7 @@ export const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.product = state.product.filter(
-          (product) => product._id !== action.payload.id
-        )
+        state.product = []
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false

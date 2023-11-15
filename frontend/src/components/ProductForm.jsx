@@ -34,7 +34,7 @@ function ProductForm() {
                 name='name'
                 id='name'
                 value={name}
-                autocomplete="product-name"
+                autoComplete="product-name"
                 onChange={(e) => setName(e.target.value)}
             />
             <label htmlFor='price'>Price</label>
@@ -43,7 +43,7 @@ function ProductForm() {
                 name='price'
                 id='price'
                 value={price}
-                autocomplete="price"
+                autoComplete="price"
                 onChange={(e) => setPrice(e.target.value)}
             />
             <label htmlFor='quantity'>Quantity</label>
@@ -52,7 +52,7 @@ function ProductForm() {
                 name='quantity'
                 id='quantity'
                 value={quantity}
-                autocomplete="quantity"
+                autoComplete="quantity"
                 onChange={(e) => setQuantity(e.target.value)}
             />
         </div>
