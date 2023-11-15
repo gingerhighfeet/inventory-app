@@ -1,7 +1,17 @@
+import ProductForm from '../components/ProductForm'
+
 
 function Invoice() {
+
   return (
-    <div>Add Invoice</div>
+    <>
+    <div>
+    <h2>Add Invoice</h2>
+
+    <ProductForm />
+    
+    </div>
+    </>
   )
 }
 

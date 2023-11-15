@@ -26,7 +26,7 @@ const getProducts = asyncHandler(async (req, res) => {
 // @desc    Set product
 // @route   POST /api/products
 // @access  Private
-const setProduct = asyncHandler(async (req, res) => {
+const createProduct = asyncHandler(async (req, res) => {
     const { name, price, quantity } = req.body;
     
   if (!name || !price || !quantity) {
@@ -65,6 +65,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
 module.exports = {
     getProducts,
-    setProduct,
+    createProduct,
     deleteProduct,
 } 

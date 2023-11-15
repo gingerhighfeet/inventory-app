@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = '/api/products/'
+const API_URL = 'http://localhost:5000/api/products/'
 
 // Create product
 const createProduct = async (productData, token) => {

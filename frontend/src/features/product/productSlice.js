@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import productService from './productService'
 
 const initialState = {
-  product: [],
+  product: {},
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -15,7 +15,7 @@ export const createProduct = createAsyncThunk(
   async (productData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await productService.createproduct(productData, token)
+      return await productService.createProduct(productData, token)
     } catch (error) {
       const message =
         (error.response &&
@@ -80,7 +80,7 @@ export const productSlice = createSlice({
       .addCase(createProduct.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.goals.push(action.payload)
+        state.product = action.payload
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.isLoading = false
@@ -93,7 +93,7 @@ export const productSlice = createSlice({
       .addCase(getProducts.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.goals = action.payload
+        state.product = action.payload
       })
       .addCase(getProducts.rejected, (state, action) => {
         state.isLoading = false
@@ -106,7 +106,7 @@ export const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.products = state.products.filter(
+        state.product = state.product.filter(
           (product) => product._id !== action.payload.id
         )
       })
