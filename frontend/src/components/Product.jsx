@@ -5,7 +5,8 @@ function Product({ name, price, quantity }) {
       <p>Price: ${price}</p>
       <p>Quantity: {quantity}</p>
     </div>
-  );
+  )
 }
 
-export default Product;
+
+export default Product

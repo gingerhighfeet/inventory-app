@@ -12,7 +12,8 @@ const getProducts = asyncHandler(async (req, res) => {
         const formattedProducts = products.map(item => ({
             name: item.name,
             price: item.price,
-            quantity: item.quantity
+            quantity: item.quantity,
+            invoiceNumber: item.invoiceNumber,
         }));
 
         res.status(200).json(formattedProducts);
@@ -29,7 +30,7 @@ const getProducts = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
     const { name, price, quantity } = req.body;
     
-  if (!name || !price || !quantity) {
+  if (!name || !price || !quantity || !invoiceNumber ) {
     res.status(400)
     throw new Error('Please add all fields')
   }
@@ -38,6 +39,7 @@ const createProduct = asyncHandler(async (req, res) => {
         name,
         price,
         quantity,
+        invoiceNumber,
     });
   
    res.status(200).json(products);
