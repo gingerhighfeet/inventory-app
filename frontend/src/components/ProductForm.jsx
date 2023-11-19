@@ -1,45 +1,75 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createProduct } from '../features/product/productSlice';
-import { createInvoice } from '../features/invoice/invoiceSlice'
+import { createInvoice } from '../features/invoice/invoiceSlice';
 
-function ProductForm() {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
+function ProductForm({ products }) {
+
   const [invoiceNumber, setInvoiceNumber] = useState('');
-  const [invoiceDate, setInvoiceDate] = useState(''); 
+  const [invoiceDate, setInvoiceDate] = useState('');
   const [vendor, setVendor] = useState('');
 
+  // Create a state object to store price and quantity for each product
+  const [productFields, setProductFields] = useState({});
+
+  const [successMessage, setSuccessMessage] = useState('');
+
+  // Extract unique product names and sort them alphabetically
+  const uniqueProductNames = [...new Set(products.map((product) => product.name))].sort();
   const dispatch = useDispatch();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    const productData = {
-      name,
-      price,
-      quantity,
-      invoiceNumber, 
-    };
-
-    const invoiceData = {
-      invoiceNumber, 
-      invoiceDate, 
-      vendor,
-    }
-    
-    dispatch(createInvoice(invoiceData))
-    dispatch(createProduct(productData));
-    // Reset all form fields after submission
-    setName('');
-    setPrice('');
-    setQuantity('');
-    setInvoiceNumber('');
-    setInvoiceDate('');
-    setVendor('');
+  const onProductFieldChange = (productName, field, value) => {
+    setProductFields((prevFields) => ({
+      ...prevFields,
+      [productName]: {
+        ...prevFields[productName],
+        [field]: value,
+      },
+    }));
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+  
+    const invoiceData = {
+      invoiceNumber,
+      invoiceDate,
+      vendor,
+    };
+  
+    try {
+      // Dispatch the createInvoice action
+      await dispatch(createInvoice(invoiceData));
+  
+      // Dispatch the createProduct action for each product
+      for (const [productName, fields] of Object.entries(productFields)) {
+        const productData = {
+          name: productName,
+          price: fields.price || '',
+          quantity: fields.quantity || '',
+          invoiceNumber,
+        };
+  
+        // Dispatch the createProduct action for each product
+        await dispatch(createProduct(productData));
+      }
+  
+      setSuccessMessage('Invoice added successfully!');
+      // Reset form fields after successful submission
+      setInvoiceNumber('');
+      setInvoiceDate('');
+      setVendor('');
+      setProductFields({});
+    } catch (error) {
+      console.error('Error creating product or invoice:', error);
+      // Handle or display the error message to the user
+      // e.g., set an error state in your component
+    }
+  };
+
+  const clearSuccessMessage = () => {
+    setSuccessMessage('');
+  };
   return (
     <section className='form'>
       <form onSubmit={onSubmit}>
@@ -73,35 +103,30 @@ function ProductForm() {
             onChange={(e) => setVendor(e.target.value)}
           />
 
-          <label htmlFor='name'>Product Name</label>
-          <input
-            type='text'
-            name='name'
-            id='name'
-            value={name}
-            autoComplete='product-name'
-            onChange={(e) => setName(e.target.value)}
-          />
+          {uniqueProductNames.map((productName) => (
+            <div key={productName} className='product-row'>
+              <label htmlFor={`price-${productName}`}>{productName}</label>
+              <input
+                type='number'
+                id={`price-${productName}`}
+                name={`price-${productName}`}
+                value={productFields[productName]?.price || ''}
+                autoComplete={`price-${productName}`}
+                onChange={(e) => onProductFieldChange(productName, 'price', e.target.value)}
+                placeholder='Price'
+              />
 
-          <label htmlFor='price'>Price</label>
-          <input
-            type='number'
-            name='price'
-            id='price'
-            value={price}
-            autoComplete='price'
-            onChange={(e) => setPrice(e.target.value)}
-          />
-
-          <label htmlFor='quantity'>Quantity</label>
-          <input
-            type='number'
-            name='quantity'
-            id='quantity'
-            value={quantity}
-            autoComplete='quantity'
-            onChange={(e) => setQuantity(e.target.value)}
-          />
+              <input
+                type='number'
+                id={`quantity-${productName}`}
+                name={`quantity-${productName}`}
+                value={productFields[productName]?.quantity || ''}
+                autoComplete={`quantity-${productName}`}
+                onChange={(e) => onProductFieldChange(productName, 'quantity', e.target.value)}
+                placeholder='Quantity'
+              />
+            </div>
+          ))}
         </div>
 
         <div className='form-group'>
@@ -110,6 +135,14 @@ function ProductForm() {
           </button>
         </div>
       </form>
+
+      {successMessage && (
+      <div className='success-message'>
+        <p>{successMessage}</p>
+        {/* Automatically clear the message after 3 seconds */}
+        {setTimeout(clearSuccessMessage, 3000)}
+      </div>
+    )}
     </section>
   );
 }

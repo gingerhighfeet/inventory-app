@@ -16,3 +16,12 @@ export const createInvoice = async (invoiceData) => {
     throw error;
   }
 };
+
+export const getInvoices = createAsyncThunk('invoice/getInvoices', async () => {
+  try {
+    const invoices = await getInvoices();
+    return invoices;
+  } catch (error) {
+    throw error.message;
+  }
+});

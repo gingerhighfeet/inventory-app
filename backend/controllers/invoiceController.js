@@ -1,13 +1,13 @@
 const asyncHandler = require('express-async-handler')
 
-const Invoices = require('../models/invoiceModel')
+const Invoice = require('../models/invoiceModel')
 
 //@desc Get invoices 
 //@route GET /api/invoices
 //@access Private
 const getInvoices = asyncHandler(async (req, res) => {
     try {
-        const invoices = await Invoices.find({}, { _id: 0, __v: 0 }); // Exclude _id and __v fields from the response
+        const invoices = await Invoice.find({}, { _id: 0, __v: 0 });
 
         const formattedInvoices = invoices.map(item => ({
             invoiceDate: item.invoiceDate,
@@ -17,7 +17,6 @@ const getInvoices = asyncHandler(async (req, res) => {
 
         res.status(200).json(formattedInvoices);
     } catch (error) {
-        // Handle error, for example, send an error response
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -34,7 +33,7 @@ const createInvoice = asyncHandler(async (req, res) => {
     throw new Error('Please add all fields')
   }
   
-   const invoices = await Invoices.create({
+   const invoices = await Invoice.create({
         invoiceNumber,
         invoiceDate,
         vendor,

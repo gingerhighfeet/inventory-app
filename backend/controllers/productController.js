@@ -28,7 +28,7 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route   POST /api/products
 // @access  Private
 const createProduct = asyncHandler(async (req, res) => {
-    const { name, price, quantity } = req.body;
+    const { name, price, quantity, invoiceNumber } = req.body;
     
   if (!name || !price || !quantity || !invoiceNumber ) {
     res.status(400)
