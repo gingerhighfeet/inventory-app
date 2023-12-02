@@ -14,7 +14,23 @@ const invoiceSchema = mongoose.Schema (
           type: String,
           required: [true, 'Please add a vendor'],
         },
-  },
+        products: [
+          {
+            name: {
+              type: String,
+              required: true,
+            },
+            price: {
+              type: Number,
+              required: true,
+            },
+            quantity: {
+              type: Number,
+              required: true,
+            },
+          },
+        ],
+    },
     {
       timestamps: true,
     })

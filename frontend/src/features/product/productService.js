@@ -31,6 +31,25 @@ const getProducts = async (token) => {
   }
 };
 
+// Update a product
+const updateProduct = async (updateArray, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const response = await axios.put(`${API_URL}/update`, updateArray, config);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating products', error.response ? error.response.status : 'No response', error.response ? error.response.data : 'No response data');
+    throw error; // Re-throw the error to handle it in the calling code
+  }
+};
+
+
 // Delete a product
 const deleteProduct = async (productId, token) => {
   const config = {
@@ -47,7 +66,7 @@ const deleteProduct = async (productId, token) => {
 const productService = {
   createProduct,
   getProducts,
-  //updateInventory,
+  updateProduct,
   deleteProduct,
 }
 

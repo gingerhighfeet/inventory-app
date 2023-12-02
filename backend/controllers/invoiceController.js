@@ -26,9 +26,9 @@ const getInvoices = asyncHandler(async (req, res) => {
 // @route   POST /api/invoices
 // @access  Private
 const createInvoice = asyncHandler(async (req, res) => {
-    const { invoiceNumber, invoiceDate, vendor } = req.body;
+    const { invoiceNumber, invoiceDate, vendor, products } = req.body;
     
-  if (!invoiceNumber || !invoiceDate || !vendor ) {
+  if (!invoiceNumber || !invoiceDate || !vendor || !products ) {
     res.status(400)
     throw new Error('Please add all fields')
   }
@@ -37,6 +37,7 @@ const createInvoice = asyncHandler(async (req, res) => {
         invoiceNumber,
         invoiceDate,
         vendor,
+        products,
     });
   
    res.status(200).json(invoices);

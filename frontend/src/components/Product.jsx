@@ -1,4 +1,4 @@
-function Product({ name, price, quantity }) {
+function Product({ _id, name, price, quantity }) {
   return (
     <div>
       <h3>{name}</h3>

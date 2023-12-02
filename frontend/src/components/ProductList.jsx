@@ -1,14 +1,13 @@
-import Product from './Product'
+import Product from './Product';
 
 function ProductList({ products }) {
   return (
-    <div>
-      <h2>Product List</h2>
-      <ul>
-        {products.map((product, index) => (
-          <Product key={index} {...product} />
-        ))}
-      </ul>
+    <div className='products'>
+      
+      {products.map((product, index) => (<div className='product'>
+  <Product key={product._id} {...product} />
+</div>
+))}
     </div>
   );
 }

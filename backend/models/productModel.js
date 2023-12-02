@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 
 const productSchema = mongoose.Schema(
   {
+    category: {
+      type: String,
+      required: [true, 'Please add a category']
+    },
     name: {
       type: String,
       required: [true, 'Please add a product name'],
@@ -14,10 +18,6 @@ const productSchema = mongoose.Schema(
         type: Number,
         required: [true, 'Please add a quantity'],
       },
-    invoiceNumber: {
-        type: String,
-        required: [true, 'Please enter an invoice number']
-    }
 },
   {
     timestamps: true,
