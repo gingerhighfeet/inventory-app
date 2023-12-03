@@ -9,17 +9,15 @@ const initialState = {
   error: null,
 };
 
-// Thunk to get invoices
 export const getInvoices = createAsyncThunk('invoice/getInvoices', async () => {
   try {
     const response = await axios.get(API_URL);
     return response.data;
   } catch (error) {
-    throw error.message;
+    return Promise.reject(error.message);
   }
 });
 
-// Thunk to create an invoice
 export const createInvoice = createAsyncThunk('invoice/createInvoice', async (invoiceData) => {
   try {
     const response = await axios.post(API_URL, invoiceData, {
@@ -29,7 +27,7 @@ export const createInvoice = createAsyncThunk('invoice/createInvoice', async (in
     });
     return response.data;
   } catch (error) {
-    throw error.message;
+    return Promise.reject(error.message);
   }
 });
 
@@ -56,12 +54,12 @@ const invoiceSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getInvoices.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.invoiceList = action.payload;
+       state.status = 'succeeded';
+        state.invoiceList = action.payload; 
       })
       .addCase(getInvoices.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
+      state.status = 'failed';
+      state.error = action.error.message;
       })
       .addCase(createInvoice.pending, (state) => {
         state.status = 'loading';

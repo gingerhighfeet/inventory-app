@@ -28,7 +28,7 @@ function Header() {
             </button>
           </li>
           <li>
-              <Link to='/invoice'>
+              <Link to='/invoices/view'>
                Invoices
               </Link>
             </li>

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProductForm from '../components/ProductForm';
 import { getProducts } from '../features/product/productSlice';
 
-function Invoice() {
+function AddInvoice() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,4 +34,4 @@ function Invoice() {
   );
 }
 
-export default Invoice;
+export default AddInvoice;

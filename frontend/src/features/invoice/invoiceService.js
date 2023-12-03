@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:5000/api/invoices/';
 
 export const createInvoice = async (invoiceData) => {
   try {
-    const response = await axios.post(`${API_URL}`, invoiceData, {
+    const response = await axios.post(`${API_URL}` + 'add', invoiceData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -17,11 +17,17 @@ export const createInvoice = async (invoiceData) => {
   }
 };
 
-export const getInvoices = createAsyncThunk('invoice/getInvoices', async () => {
+export const getInvoices = async () => {
   try {
-    const invoices = await getInvoices();
-    return invoices;
+    const response = await axios.get(`${API_URL}` + 'view', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data;
   } catch (error) {
-    throw error.message;
+    console.error('Error fetching invoices:', error.message);
+    throw error;
   }
-});
+};

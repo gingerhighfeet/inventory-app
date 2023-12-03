@@ -22,9 +22,12 @@ function Dashboard() {
   }, [user, navigate, dispatch]);
 
   const handleAddInvoice = () => {
-    // Add logic to navigate to the invoices page
-    navigate('/invoices');
+    navigate('/invoices/add');
   };
+
+  const handleAddProduct = () => {
+    navigate('/products/addProduct')
+  }
 
   return (
     <>
@@ -36,6 +39,7 @@ function Dashboard() {
       <div>
         <ProductList products={products} />
       <button className='btn btn-block' onClick={handleAddInvoice}>Add Invoice</button>
+      <button className='btn btn-block' onClick={handleAddProduct}>Add New Product</button>
       </div>
       <div>
       <br></br>

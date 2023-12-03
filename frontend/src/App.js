@@ -5,7 +5,9 @@ import Header from './components/Header'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Invoice from './pages/Invoice'
+import AddInvoice from './pages/AddInvoice'
+import Invoices from './pages/Invoices'
+import AddProduct from './pages/AddProduct'
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
             <Route path='/' element={<Dashboard />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
-            <Route path='/invoice' element={<Invoice />} />
+            <Route path='/invoices/add' element={<AddInvoice />} />
+            <Route path='/invoices/view' element={<Invoices />} />
+            <Route path='/products/addProduct' element={<AddProduct />} />
           </Routes>
         </div>
       </Router>

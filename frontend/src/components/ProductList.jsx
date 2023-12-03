@@ -3,11 +3,11 @@ import Product from './Product';
 function ProductList({ products }) {
   return (
     <div className='products'>
-      
-      {products.map((product, index) => (<div className='product'>
-  <Product key={product._id} {...product} />
-</div>
-))}
+      {products.map((product) => (
+        <div key={product.name} className='product'>
+          <Product {...product} />
+        </div>
+      ))}
     </div>
   );
 }

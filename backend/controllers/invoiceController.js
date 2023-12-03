@@ -12,7 +12,8 @@ const getInvoices = asyncHandler(async (req, res) => {
         const formattedInvoices = invoices.map(item => ({
             invoiceDate: item.invoiceDate,
             invoiceNumber: item.invoiceNumber,
-            vendor: item.vendor
+            vendor: item.vendor,
+            products: item.products,
         }));
 
         res.status(200).json(formattedInvoices);
@@ -32,7 +33,7 @@ const createInvoice = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error('Please add all fields')
   }
-  
+
    const invoices = await Invoice.create({
         invoiceNumber,
         invoiceDate,

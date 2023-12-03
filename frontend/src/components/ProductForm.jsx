@@ -42,10 +42,6 @@ function ProductForm({ products }) {
     });
   };
 
-  const clearSuccessMessage = () => {
-    setSuccessMessage('');
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -66,11 +62,13 @@ function ProductForm({ products }) {
 
     try {
       // Dispatch the createInvoice action
-      dispatch(createInvoice(invoiceData));
+      await dispatch(createInvoice(invoiceData));
 
       // Dispatch the updateProduct action
-      dispatch(updateProduct(updateArray));
-      console.log('update array: ', updateArray);
+      await dispatch(updateProduct(updateArray));
+
+      // Show a popup alert
+      window.alert('Invoice added successfully!');
 
       // Clear fields after updating products
       setInvoiceNumber('');
@@ -78,13 +76,13 @@ function ProductForm({ products }) {
       setVendor('');
       setProductFields([]);
       setSuccessMessage('Invoice added successfully!');
-
-      // Show a popup alert
-    window.alert('Invoice added successfully!');
-    
     } catch (error) {
       console.error('Error creating product or invoice:', error);
     }
+  };  
+
+    const clearSuccessMessage = () => {
+    setSuccessMessage('');
   };
 
   // Group products by category for rendering
